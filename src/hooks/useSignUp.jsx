@@ -1,8 +1,10 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { projectAuth } from "../firebase/config"
 import {useAuthContext} from './useAuthContext'
 
+
 export const useSignUp = () => {
+    const [isCancelled, setIsCancelled] = useState(false)
     const [error, setError] = useState(null);
     const [isPending, setIsPending] = useState(false);
     const {dispatch} = useAuthContext()
@@ -26,16 +28,30 @@ export const useSignUp = () => {
          // dispatch login action
          dispatch ({type: 'LOGIN_SUCCESS', payload: res.user})
 
-         setIsPending(false)
-         setError(null)
+         // update the local state hook for resetting the error and isPending states
+         if (!isCancelled) {
+            setIsPending(false)
+            setError(null)
+         }
+       
         }
 
         catch(err) {
-            console.log(err.message)
-            setError(err.message)
-            setIsPending(false)
+            if (!isCancelled) {
+                console.log(err.message)
+                setError(err.message)
+                setIsPending(false)
+            }
+           
         }
     }
+
+    // set a clean up function to prevent memory leaks using useEffect hook
+    useEffect(() => {
+      return () => setIsCancelled(true) 
+      
+    }, []);
+
      return {error, isPending, signup}
 
 }
