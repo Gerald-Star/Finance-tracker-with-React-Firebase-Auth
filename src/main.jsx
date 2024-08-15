@@ -8,8 +8,6 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AuthContextProvider>
       <App />
-    <App />
-
     </AuthContextProvider>
   </StrictMode>,
 )
