@@ -15,8 +15,8 @@ export const authReducer = (state, action) => {
             return {
                 ...state,
                 user: action.payload,
-                isPending: false,
-                error: null
+                //isPending: false,
+                //error: null
             }
         case 'LOGIN_ERROR':
             return {
@@ -47,7 +47,7 @@ export const AuthContextProvider = ({ children }) => {
         error: null
         
     })
-    console.log('AuthContext:', state) // check the state of the user whenever state changes
+    console.log('AuthContext state:', state) // check the state of the user whenever state changes
     return (
         <AuthContext.Provider value= {{...state, dispatch}}>
             { children }
